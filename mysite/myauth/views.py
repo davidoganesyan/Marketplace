@@ -10,13 +10,11 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from myauth.models import Profile, Avatar
-from myauth.serializers import UserSignUpSerializer, ProfileSerializer, PasswordUpdateSerializer
+from .models import Profile, Avatar
+from .serializers import UserSignUpSerializer, ProfileSerializer, PasswordUpdateSerializer
 
 
 class SignUpApiView(APIView):
-    """Представление для создания пользователя/регистрация"""
-
     def post(self, request: Request) -> Response:
         data = None
         for i in request.data.dict():
@@ -42,8 +40,6 @@ class SignUpApiView(APIView):
 
 
 class SignInApiView(APIView):
-    """Представление аутентификация пользователей/вход"""
-
     def post(self, request: Request) -> Response:
         user_data = json.loads(request.body)
         username = user_data.get("username")
@@ -57,8 +53,6 @@ class SignInApiView(APIView):
 
 
 class SingOutApiView(APIView):
-    """Представление для выхода пользователя из системы"""
-
     def post(self, request: Request) -> Response:
         logout(request)
         return Response(status.HTTP_200_OK)

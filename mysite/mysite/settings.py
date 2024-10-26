@@ -13,6 +13,8 @@ import logging.config
 from os import getenv
 from pathlib import Path
 
+from django.conf import settings
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATABASE_DIR = BASE_DIR / "data"
@@ -42,10 +44,13 @@ INSTALLED_APPS = [
     'frontend',
     'myauth.apps.MyauthConfig',
     'product.apps.ProductConfig',
+    'order.apps.OrderConfig',
+    'basket.apps.BasketConfig',
 
     'rest_framework',
     'drf_spectacular',
     'django_filters',
+    # 'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -58,6 +63,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     # 'request_logging.middleware.LoggingMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -167,4 +173,12 @@ LOGGING = {
             'propagate': False,
         },
     },
+}
+
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': lambda request: True if settings.DEBUG else False,
+    'DISABLE_PANELS': {
+        'debug_toolbar.panels.redirects.RedirectsPanel',
+    },
+    'SERVE_STATIC': False,
 }

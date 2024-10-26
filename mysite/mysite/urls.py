@@ -25,6 +25,8 @@ urlpatterns = [
     path('', include('frontend.urls')),
     path('api/', include('myauth.urls')),
     path('api/', include('product.urls')),
+    path('api/', include('order.urls')),
+    path('api/', include('basket.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/schema/swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger'),
 
@@ -33,3 +35,4 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns.extend(static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))
     urlpatterns.extend(static(settings.STATIC_URL, document_root=settings.STATIC_ROOT))
+    # urlpatterns.append(path('__debug__/', include('debug_toolbar.urls')))
