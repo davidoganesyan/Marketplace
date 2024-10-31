@@ -12,10 +12,10 @@ __pycache__/
 .Python
 build/
 develop-eggs/
-dist/
+#dist/
 downloads/
 eggs/
-.eggs/
+#.eggs/
 lib/
 lib64/
 parts/
@@ -23,7 +23,7 @@ sdist/
 var/
 wheels/
 share/python-wheels/
-*.egg-info/
+#*.egg-info/
 .installed.cfg
 *.egg
 MANIFEST
