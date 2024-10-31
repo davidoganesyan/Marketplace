@@ -28,37 +28,67 @@ class OrderSerializer(serializers.ModelSerializer):
         return Profile.objects.get(user=obj.user_id).phone
 
     def get_created_at(self, obj: Order):
-        return datetime.datetime.fromisoformat(str(obj.createdAt)).strftime("%Y-%m-%d %H:%M")
+        return datetime.datetime.fromisoformat(str(obj.createdAt)).strftime(
+            "%Y-%m-%d %H:%M"
+        )
 
     def get_total_cost(self, obj: Order):
         user_cart = Basket.objects.get(user=obj.user)
-        items_cart = BasketItems.objects.filter(cart=user_cart, is_paid=0).values("product", "count")
+        items_cart = BasketItems.objects.filter(cart=user_cart, is_paid=0).values(
+            "product", "count"
+        )
         total = 0
         for item in items_cart:
             if SalesProduct.active_objects.filter(product_id=item["product"]):
-                total += SalesProduct.active_objects.get(product_id=item["product"]).salePrice * item["count"]
+                total += (
+                    SalesProduct.active_objects.get(
+                        product_id=item["product"]
+                    ).salePrice
+                    * item["count"]
+                )
             else:
-                total += Product.active_objects.get(id=item["product"]).price * item["count"]
+                total += (
+                    Product.active_objects.get(id=item["product"]).price * item["count"]
+                )
         return total
 
     class Meta:
         model = Order
         fields = (
-            "id", "createdAt", "fullName", "email", "phone", "deliveryType", "paymentType", "totalCost", "status",
-            "city", "address", "products",
+            "id",
+            "createdAt",
+            "fullName",
+            "email",
+            "phone",
+            "deliveryType",
+            "paymentType",
+            "totalCost",
+            "status",
+            "city",
+            "address",
+            "products",
         )
 
     def to_representation(self, instance: Order) -> OrderedDict:
         data = super().to_representation(instance)
         user_cart = Basket.objects.get(user=instance.user)
         if instance.status == "paid":
-            items_cart = BasketItems.objects.filter(cart=user_cart, is_paid=1, order_id=instance.id).values("product",
-                                                                                                            "count")
+            items_cart = BasketItems.objects.filter(
+                cart=user_cart, is_paid=1, order_id=instance.id
+            ).values("product", "count")
         else:
-            items_cart = BasketItems.objects.filter(cart=user_cart, is_paid=0).values("product", "count")
+            items_cart = BasketItems.objects.filter(cart=user_cart, is_paid=0).values(
+                "product", "count"
+            )
 
         for product in data["products"]:
-            product['count'] = sum([item["count"] for item in items_cart if item["product"] == product["id"]])
+            product["count"] = sum(
+                [
+                    item["count"]
+                    for item in items_cart
+                    if item["product"] == product["id"]
+                ]
+            )
         return data
 
 
@@ -69,5 +99,7 @@ class OrderHistorySerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance: Order, **kwargs) -> OrderedDict:
         data = super().to_representation(instance)
-        data["createdAt"] = datetime.datetime.fromisoformat(data["createdAt"]).strftime("%Y-%m-%d %H:%M")
+        data["createdAt"] = datetime.datetime.fromisoformat(data["createdAt"]).strftime(
+            "%Y-%m-%d %H:%M"
+        )
         return data

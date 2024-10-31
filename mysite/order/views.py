@@ -18,7 +18,9 @@ class OrderApiView(APIView):
     def post(self, request: Request) -> Response:
         user_basket = Basket.objects.get(user=request.user)
         basket_items = BasketItems.objects.filter(cart_id=user_basket, is_paid=0)
-        products_list = Product.objects.filter(id__in=basket_items.values_list("product", flat=True))
+        products_list = Product.objects.filter(
+            id__in=basket_items.values_list("product", flat=True)
+        )
         data = Order.objects.create(user=request.user)
         data.products.set(products_list)
         data.save()
@@ -36,15 +38,15 @@ class OrdersDetailApiView(APIView, IsAuthenticated):
         for item in basket_items:
             item.order_id = kwargs["id"]
             item.save()
-        order = Order.objects.get(pk=kwargs['id'])
-        order.deliveryType = request.data['deliveryType']
-        order.paymentType = request.data['paymentType']
-        order.totalCost = request.data['totalCost']
+        order = Order.objects.get(pk=kwargs["id"])
+        order.deliveryType = request.data["deliveryType"]
+        order.paymentType = request.data["paymentType"]
+        order.totalCost = request.data["totalCost"]
         order.status = "accepted"
-        order.city = request.data['city']
-        order.address = request.data['address']
+        order.city = request.data["city"]
+        order.address = request.data["address"]
         order.save()
-        return Response({'orderId': order.id})
+        return Response({"orderId": order.id})
 
 
 class PaymentApiView(APIView):
@@ -59,7 +61,9 @@ class PaymentApiView(APIView):
         user_order.status = "paid"
         user_order.save()
 
-        user_basket_items = BasketItems.objects.filter(cart_id=request.user.id, is_paid=0)
+        user_basket_items = BasketItems.objects.filter(
+            cart_id=request.user.id, is_paid=0
+        )
         for item in user_basket_items:
             ordered_product = Product.objects.get(id=item.product_id)
             ordered_product.amount = ordered_product.amount - item.count

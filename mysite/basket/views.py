@@ -16,13 +16,15 @@ class BasketApiView(APIView):
 
     def post(self, request: Request) -> Response:
         users_basket, _ = Basket.objects.get_or_create(user=request.user)
-        product_id = request.data.get('id')
-        count = request.data.get('count', 0)
+        product_id = request.data.get("id")
+        count = request.data.get("count", 0)
         product = get_object_or_404(Product, id=product_id)
         if count > product.amount:
             count = product.amount
 
-        basket_item, created = BasketItems.objects.get_or_create(cart=users_basket, product=product, is_paid=0)
+        basket_item, created = BasketItems.objects.get_or_create(
+            cart=users_basket, product=product, is_paid=0
+        )
 
         if basket_item.count < product.amount:
             basket_item.count += int(count)
@@ -33,9 +35,11 @@ class BasketApiView(APIView):
 
     def delete(self, request: Request) -> Response:
         users_basket = Basket.objects.get(user=request.user.id)
-        product_id = request.data.get('id')
-        basket_item = get_object_or_404(BasketItems, cart=users_basket, product=product_id, is_paid=0)
-        basket_item.count -= request.data.get('count', 0)
+        product_id = request.data.get("id")
+        basket_item = get_object_or_404(
+            BasketItems, cart=users_basket, product=product_id, is_paid=0
+        )
+        basket_item.count -= request.data.get("count", 0)
         if basket_item.count > 0:
             basket_item.save()
         else:

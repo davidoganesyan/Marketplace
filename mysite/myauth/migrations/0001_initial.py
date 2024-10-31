@@ -16,22 +16,69 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Profile',
+            name="Profile",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('fullName', models.CharField(blank=True, max_length=250, null=True)),
-                ('email', models.EmailField(blank=True, max_length=254, null=True, unique=True)),
-                ('phone', models.CharField(blank=True, max_length=20, null=True, unique=True)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("fullName", models.CharField(blank=True, max_length=250, null=True)),
+                (
+                    "email",
+                    models.EmailField(
+                        blank=True, max_length=254, null=True, unique=True
+                    ),
+                ),
+                (
+                    "phone",
+                    models.CharField(blank=True, max_length=20, null=True, unique=True),
+                ),
+                (
+                    "user",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Avatar',
+            name="Avatar",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('src', models.ImageField(blank=True, null=True, upload_to=myauth.models.avatar_images_directory_path)),
-                ('alt', models.CharField(blank=True, default='Выберите фото', max_length=250, null=True)),
-                ('profile', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='myauth.profile')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "src",
+                    models.ImageField(
+                        blank=True,
+                        null=True,
+                        upload_to=myauth.models.avatar_images_directory_path,
+                    ),
+                ),
+                (
+                    "alt",
+                    models.CharField(
+                        blank=True, default="Выберите фото", max_length=250, null=True
+                    ),
+                ),
+                (
+                    "profile",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE, to="myauth.profile"
+                    ),
+                ),
             ],
         ),
     ]

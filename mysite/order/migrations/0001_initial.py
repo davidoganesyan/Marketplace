@@ -10,28 +10,85 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('product', '0001_initial'),
+        ("product", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Order',
+            name="Order",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('createdAt', models.DateTimeField(auto_now_add=True)),
-                ('deliveryType', models.CharField(choices=[('free', 'Free'), ('express', 'Express'), ('standard', 'Standard')], default='standard', max_length=10)),
-                ('paymentType', models.CharField(choices=[('online', 'Online'), ('cash', 'payment upon receipt')], default='online', max_length=10)),
-                ('totalCost', models.DecimalField(decimal_places=2, default=0, max_digits=10)),
-                ('status', models.CharField(choices=[('pending', 'Pending'), ('accepted', 'Accepted'), ('paid', 'Paid'), ('shipped', 'Shipped'), ('delivered', 'Delivered'), ('cancelled', 'Cancelled')], default='pending', max_length=10)),
-                ('city', models.CharField(blank=True, max_length=100, null=True)),
-                ('address', models.CharField(blank=True, max_length=255, null=True)),
-                ('products', models.ManyToManyField(related_name='ordered', to='product.product')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("createdAt", models.DateTimeField(auto_now_add=True)),
+                (
+                    "deliveryType",
+                    models.CharField(
+                        choices=[
+                            ("free", "Free"),
+                            ("express", "Express"),
+                            ("standard", "Standard"),
+                        ],
+                        default="standard",
+                        max_length=10,
+                    ),
+                ),
+                (
+                    "paymentType",
+                    models.CharField(
+                        choices=[
+                            ("online", "Online"),
+                            ("cash", "payment upon receipt"),
+                        ],
+                        default="online",
+                        max_length=10,
+                    ),
+                ),
+                (
+                    "totalCost",
+                    models.DecimalField(decimal_places=2, default=0, max_digits=10),
+                ),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("pending", "Pending"),
+                            ("accepted", "Accepted"),
+                            ("paid", "Paid"),
+                            ("shipped", "Shipped"),
+                            ("delivered", "Delivered"),
+                            ("cancelled", "Cancelled"),
+                        ],
+                        default="pending",
+                        max_length=10,
+                    ),
+                ),
+                ("city", models.CharField(blank=True, max_length=100, null=True)),
+                ("address", models.CharField(blank=True, max_length=255, null=True)),
+                (
+                    "products",
+                    models.ManyToManyField(
+                        related_name="ordered", to="product.product"
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Order',
-                'verbose_name_plural': 'Orders',
+                "verbose_name": "Order",
+                "verbose_name_plural": "Orders",
             },
         ),
     ]

@@ -11,7 +11,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Profile, Avatar
-from .serializers import UserSignUpSerializer, ProfileSerializer, PasswordUpdateSerializer
+from .serializers import (
+    UserSignUpSerializer,
+    ProfileSerializer,
+    PasswordUpdateSerializer,
+)
 
 
 class SignUpApiView(APIView):
@@ -73,15 +77,16 @@ class ProfileApiView(LoginRequiredMixin, UserPassesTestMixin, APIView):
 
     def post(self, request: Request) -> Response:
         profile = Profile.objects.get(user=request.user.id)
-        profile.email = request.data['email']
-        profile.phone = request.data['phone']
-        profile.fullName = request.data['fullName']
+        profile.email = request.data["email"]
+        profile.phone = request.data["phone"]
+        profile.fullName = request.data["fullName"]
         profile.save()
         return Response(status.HTTP_200_OK)
 
 
 class AvatarUpdateApiView(APIView):
     permission_classes = [IsAuthenticated]
+
     def post(self, request: Request) -> Response:
         avatar_image = request.FILES["avatar"]
         profile = Profile.objects.get(user=request.user.id)
@@ -89,12 +94,13 @@ class AvatarUpdateApiView(APIView):
         if Avatar.objects.get(profile_id=request.user.id) is not None:
             Avatar.objects.get(profile_id=request.user.id).delete()
 
-        Avatar.objects.create(profile_id=profile.id, src=avatar_image, alt='photo')
+        Avatar.objects.create(profile_id=profile.id, src=avatar_image, alt="photo")
         return Response(status.HTTP_200_OK)
 
 
 class PasswordChangeApiView(APIView):
     permission_classes = [IsAuthenticated]
+
     def post(self, request: Request) -> Response:
         serializer = PasswordUpdateSerializer(instance=request.user, data=request.data)
         if serializer.is_valid(raise_exception=True):

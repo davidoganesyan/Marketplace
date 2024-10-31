@@ -1,16 +1,27 @@
 asgiref==3.8.1
 attrs==24.2.0
+black==24.10.0
+bleach==6.1.0
+click==8.1.7
 diploma-frontend @ file:///home/david/PycharmProjects/python_django_diploma/diploma-frontend/dist/diploma-frontend-0.6.tar.gz#sha256=79a8873e099449cffba4f11682e7ee63220075bee1591c7c912334707fd67567
 Django==5.1
+django-debug-toolbar==4.4.6
+django-filter==24.3
 django-request-logging==0.7.5
 djangorestframework==3.15.2
 drf-spectacular==0.27.2
 inflection==0.5.1
 jsonschema==4.23.0
 jsonschema-specifications==2023.12.1
+mypy-extensions==1.0.0
+packaging==24.1
+pathspec==0.12.1
 pillow==10.4.0
+platformdirs==4.3.6
 PyYAML==6.0.2
 referencing==0.35.1
 rpds-py==0.20.0
+six==1.16.0
 sqlparse==0.5.1
 uritemplate==4.1.1
+webencodings==0.5.1

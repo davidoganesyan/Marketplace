@@ -1,6 +1,12 @@
 from django.urls import path
-from .views import (SignUpApiView, SignInApiView, SingOutApiView, ProfileApiView, AvatarUpdateApiView,
-                    PasswordChangeApiView, )
+from .views import (
+    SignUpApiView,
+    SignInApiView,
+    SingOutApiView,
+    ProfileApiView,
+    AvatarUpdateApiView,
+    PasswordChangeApiView,
+)
 
 app_name = "myauth"
 

@@ -15,7 +15,13 @@ class Category(models.Model):
         verbose_name_plural = "Categories"
 
     title = models.CharField(max_length=50)
-    parent = models.ForeignKey("self", on_delete=models.CASCADE, blank=True, null=True, related_name="subcategories")
+    parent = models.ForeignKey(
+        "self",
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name="subcategories",
+    )
 
     def __str__(self):
         return f"Category: {self.title}, ID - {self.pk}"
@@ -26,7 +32,9 @@ class CategoryImage(models.Model):
         verbose_name = "Category image"
         verbose_name_plural = "Category images"
 
-    category = models.OneToOneField(Category, on_delete=models.CASCADE, related_name='image')
+    category = models.OneToOneField(
+        Category, on_delete=models.CASCADE, related_name="image"
+    )
     src = models.ImageField(upload_to=category_images_directory_path)
     alt = models.CharField(max_length=200, null=False, blank=True)
 
@@ -51,22 +59,29 @@ class Product(models.Model):
         verbose_name = "Product"
         verbose_name_plural = "Products"
 
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE, blank=True, null=True
+    )
     price = models.DecimalField(max_digits=11, decimal_places=2)
     amount = models.IntegerField(default=1)
     ordered_amount = models.IntegerField(default=0)
     date = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=250)
-    fullDescription = models.TextField(max_length=10 ** 4)
+    fullDescription = models.TextField(max_length=10**4)
     freeDelivery = models.BooleanField(default=False)
     reviews_count = models.PositiveIntegerField(default=0)
     rating = models.DecimalField(max_digits=2, decimal_places=1, default=3.0)
     limited = models.BooleanField(default=False)
     is_available = models.BooleanField(default=True)
     is_archived = models.BooleanField(default=False)
-    specifications = models.ForeignKey(Specifications, on_delete=models.CASCADE, blank=True, null=True,
-                                       related_name="specifications")
+    specifications = models.ForeignKey(
+        Specifications,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name="specifications",
+    )
 
     class ActiveManager(models.Manager):
         def get_queryset(self):
@@ -88,8 +103,12 @@ class ProductImage(models.Model):
         verbose_name = "Product image"
         verbose_name_plural = "Product images"
 
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images")
-    src = models.ImageField(upload_to=product_images_directory_path, null=True, blank=True)
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name="images"
+    )
+    src = models.ImageField(
+        upload_to=product_images_directory_path, null=True, blank=True
+    )
     alt = models.CharField(max_length=250, null=True, blank=True)
 
     def __str__(self):
@@ -102,7 +121,11 @@ class Tag(models.Model):
         verbose_name_plural = "Tags"
 
     name = models.CharField(max_length=50)
-    product = models.ManyToManyField(Product, blank=True, related_name="tags", )
+    product = models.ManyToManyField(
+        Product,
+        blank=True,
+        related_name="tags",
+    )
 
     def __str__(self):
         return f"Tag: {self.name}"
@@ -113,12 +136,17 @@ class Review(models.Model):
         verbose_name = "Review"
         verbose_name_plural = "Reviews"
 
-    author = models.ForeignKey(User, on_delete=models.CASCADE, )
-    text = models.TextField(max_length=10 ** 4)
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
+    text = models.TextField(max_length=10**4)
     email = models.EmailField(max_length=250)
     rate = models.DecimalField(max_digits=2, decimal_places=1, default=3.0)
     date = models.DateTimeField(auto_now_add=True)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="reviews", blank=True, null=True)
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name="reviews", blank=True, null=True
+    )
 
     def __str__(self):
         return f"{self.product.title}, Author: {self.author}"

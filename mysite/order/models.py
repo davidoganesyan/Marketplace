@@ -19,17 +19,21 @@ class Order(models.Model):
         ("cash", "payment upon receipt"),
     ]
     statusChoices = [
-        ('pending', 'Pending'),
-        ('accepted', 'Accepted'),
+        ("pending", "Pending"),
+        ("accepted", "Accepted"),
         ("paid", "Paid"),
-        ('shipped', 'Shipped'),
-        ('delivered', 'Delivered'),
-        ('cancelled', 'Cancelled'),
+        ("shipped", "Shipped"),
+        ("delivered", "Delivered"),
+        ("cancelled", "Cancelled"),
     ]
     createdAt = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT)
-    deliveryType = models.CharField(max_length=10, choices=deliveryChoices, default="standard")
-    paymentType = models.CharField(max_length=10, choices=paymentChoices, default="online")
+    deliveryType = models.CharField(
+        max_length=10, choices=deliveryChoices, default="standard"
+    )
+    paymentType = models.CharField(
+        max_length=10, choices=paymentChoices, default="online"
+    )
     totalCost = models.DecimalField(default=0, max_digits=10, decimal_places=2)
     status = models.CharField(max_length=10, choices=statusChoices, default="pending")
     city = models.CharField(max_length=100, null=True, blank=True)

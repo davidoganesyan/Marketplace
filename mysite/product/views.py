@@ -9,8 +9,15 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from myauth.models import Profile
 from .models import Category, Tag, Product, Review, SalesProduct
-from .serializers import (CategorySerializer, TagSerializer, ProductSerializerShort, ReviewSerializer, SalesSerializer,
-                          CatalogSerializer, ProductSerializerFull)
+from .serializers import (
+    CategorySerializer,
+    TagSerializer,
+    ProductSerializerShort,
+    ReviewSerializer,
+    SalesSerializer,
+    CatalogSerializer,
+    ProductSerializerFull,
+)
 
 
 class CategoryApiView(ListAPIView):
@@ -29,9 +36,19 @@ class ProductApiView(RetrieveAPIView):
 
 
 def rating_reviews_count_update(product_id):
-    ave_rating = Review.objects.filter(product_id=product_id.id).aggregate(Avg('rate')).get("rate__avg")
-    reviews_count = Product.objects.filter(pk=product_id.id).values('reviews_count')[0].get('reviews_count')
-    Product.objects.filter(pk=product_id.id).update(reviews_count=reviews_count + 1, rating=ave_rating)
+    ave_rating = (
+        Review.objects.filter(product_id=product_id.id)
+        .aggregate(Avg("rate"))
+        .get("rate__avg")
+    )
+    reviews_count = (
+        Product.objects.filter(pk=product_id.id)
+        .values("reviews_count")[0]
+        .get("reviews_count")
+    )
+    Product.objects.filter(pk=product_id.id).update(
+        reviews_count=reviews_count + 1, rating=ave_rating
+    )
 
 
 class ReviewCreateApiView(APIView):
@@ -40,7 +57,9 @@ class ReviewCreateApiView(APIView):
         rate = request.data["rate"]
         product_id = Product.active_objects.get(id=kwargs["pk"])
         email = Profile.objects.get(id=request.user.id).email
-        data = Review.objects.create(product=product_id, author=request.user, text=text, rate=rate, email=email)
+        data = Review.objects.create(
+            product=product_id, author=request.user, text=text, rate=rate, email=email
+        )
         serialized = ReviewSerializer(data)
 
         rating_reviews_count_update(product_id)
@@ -72,7 +91,7 @@ class LimitedProductApiView(ListAPIView):
 
 class PopularProductApiView(ListAPIView):
     serializer_class = ProductSerializerShort
-    queryset = Product.active_objects.order_by('-rating')[:3]
+    queryset = Product.active_objects.order_by("-rating")[:3]
 
 
 class CustomPagination(PageNumberPagination):
@@ -80,11 +99,13 @@ class CustomPagination(PageNumberPagination):
     page_query_param = "currentPage"
 
     def get_paginated_response(self, data):
-        return Response({
-            "items": data,
-            "currentPage": self.get_page_number(self.request, self.page_size),
-            "lastPage": self.page.paginator.num_pages,
-        })
+        return Response(
+            {
+                "items": data,
+                "currentPage": self.get_page_number(self.request, self.page_size),
+                "lastPage": self.page.paginator.num_pages,
+            }
+        )
 
 
 class SalesApiView(ListAPIView):
@@ -112,27 +133,27 @@ class CatalogApiView(ListAPIView):
         filter_params = self.request.GET
         products = Product.active_objects.all()
 
-        name = filter_params.get('filter[name]')
+        name = filter_params.get("filter[name]")
         if name:
             products = products.filter(title=name)
 
-        min_price = filter_params.get('filter[minPrice]')
+        min_price = filter_params.get("filter[minPrice]")
         if min_price:
             products = products.filter(price__gte=min_price)
 
-        max_price = filter_params.get('filter[maxPrice]')
+        max_price = filter_params.get("filter[maxPrice]")
         if max_price:
             products = products.filter(price__lte=max_price)
 
-        free_delivery = filter_params.get('filter[freeDelivery]') == 'true'
+        free_delivery = filter_params.get("filter[freeDelivery]") == "true"
         if free_delivery:
             products = products.filter(freeDelivery=free_delivery)
 
-        available = filter_params.get('filter[available]')
+        available = filter_params.get("filter[available]")
         if available is not None:
             products = products.filter(amount__gt=0)
 
-        category = filter_params.get('category')
+        category = filter_params.get("category")
         if category is not None:
             products = products.filter(category=category)
 

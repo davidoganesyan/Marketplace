@@ -1,6 +1,15 @@
 from django.contrib import admin
 
-from .models import Category, CategoryImage, Product, ProductImage, Tag, Specifications, Review, SalesProduct
+from .models import (
+    Category,
+    CategoryImage,
+    Product,
+    ProductImage,
+    Tag,
+    Specifications,
+    Review,
+    SalesProduct,
+)
 
 admin.site.register(CategoryImage)
 admin.site.register(Product)

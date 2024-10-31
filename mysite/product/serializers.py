@@ -1,6 +1,14 @@
 from rest_framework import serializers
 
-from .models import CategoryImage, Category, Tag, Review, ProductImage, Product, SalesProduct
+from .models import (
+    CategoryImage,
+    Category,
+    Tag,
+    Review,
+    ProductImage,
+    Product,
+    SalesProduct,
+)
 
 
 class CategoryImageSerializer(serializers.ModelSerializer):
@@ -14,7 +22,7 @@ class SubCategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ('id', 'title', 'image')
+        fields = ("id", "title", "image")
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -27,7 +35,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ('id', 'title', 'image', 'subcategories')
+        fields = ("id", "title", "image", "subcategories")
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -71,8 +79,18 @@ class ProductSerializerShort(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = (
-            'id', 'category', 'price', 'amount', 'date', 'title', 'description', 'freeDelivery',
-            'images', 'tags', 'reviews', 'rating',
+            "id",
+            "category",
+            "price",
+            "amount",
+            "date",
+            "title",
+            "description",
+            "freeDelivery",
+            "images",
+            "tags",
+            "reviews",
+            "rating",
         )
 
 
@@ -96,8 +114,20 @@ class ProductSerializerFull(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = (
-            'id', 'category', 'price', 'amount', 'date', 'title', 'description', 'fullDescription', 'freeDelivery',
-            'images', 'tags', 'reviews', 'specifications', 'rating',
+            "id",
+            "category",
+            "price",
+            "amount",
+            "date",
+            "title",
+            "description",
+            "fullDescription",
+            "freeDelivery",
+            "images",
+            "tags",
+            "reviews",
+            "specifications",
+            "rating",
         )
 
 
@@ -148,6 +178,16 @@ class CatalogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = (
-            'id', 'category', 'price', 'amount', 'date', 'title', 'description', 'freeDelivery', 'images', 'tags',
-            'reviews', 'rating',
+            "id",
+            "category",
+            "price",
+            "amount",
+            "date",
+            "title",
+            "description",
+            "freeDelivery",
+            "images",
+            "tags",
+            "reviews",
+            "rating",
         )

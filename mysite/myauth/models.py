@@ -15,5 +15,9 @@ class Profile(models.Model):
 
 class Avatar(models.Model):
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
-    src = models.ImageField(upload_to=avatar_images_directory_path, null=True, blank=True)
-    alt = models.CharField(max_length=250, null=True, blank=True, default='Выберите фото')
+    src = models.ImageField(
+        upload_to=avatar_images_directory_path, null=True, blank=True
+    )
+    alt = models.CharField(
+        max_length=250, null=True, blank=True, default="Выберите фото"
+    )

@@ -26,7 +26,9 @@ class BasketItems(models.Model):
     product = models.ForeignKey(Product, on_delete=CASCADE)
     count = models.PositiveIntegerField(default=0)
     is_paid = models.BooleanField(default=False)
-    order = models.ForeignKey(Order, on_delete=CASCADE, null=True, blank=True, related_name="order")
+    order = models.ForeignKey(
+        Order, on_delete=CASCADE, null=True, blank=True, related_name="order"
+    )
 
     def __str__(self):
         return f"Basket items for cart {self.cart}"
